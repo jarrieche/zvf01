@@ -1,0 +1,23 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="Documentos Comerciales"
+		class="sapUiPopupWithPadding"
+		items="{path:'DocumentosComerciales>/', templateShareable:false}"
+		search="busVbeln"
+		liveChange="busVbeln"
+		confirm="busVbelnClose"
+		cancel="busVbelnClose">
+		<StandardListItem
+			iconDensityAware="false"
+			iconInset="false"			
+			title="{DocumentosComerciales>Vbeln}"
+			description="Cliente:{DocumentosComerciales>Kunnr}"
+			info="OrgVtas:{DocumentosComerciales>Vkorg}"						
+			type="Active" />
+			<!-- {data>Ktabg} -  - {data>Vtweg} - {data>Spart} - 
+			{data>Vkbur} - {data>Vkgrp} - {data>Ktagr} - {data>Ktast} - 
+			{data>Ktaer} - {data>Ktaeb} -  - {data>Kunnr} - {data>Kunde} - {data>Parvw}" -->
+	</SelectDialog>
+</core:FragmentDefinition>

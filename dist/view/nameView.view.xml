@@ -1,0 +1,24 @@
+<mvc:View
+    controllerName="com.vf01.off.zvf01offline.controller.nameView"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+>
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>Crear Facturas}">
+					<content>
+						<Label text="Documento Comercial" labelFor="multiInput"/>
+						<Input id="vbeln" showValueHelp="true" valueHelpRequest="getVbeln"/>
+
+						<Button type="Accept" press="sincronizar" text="Sincronizar SAP" />
+						<Button type="Accept" press="guardar" text="Guardar" />
+						<Button type="Accept" press="clear" text="Limpiar Campos" />
+						<Button type="Accept" press="onEnviar" text="Enviar a SAP" />					
+						</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
