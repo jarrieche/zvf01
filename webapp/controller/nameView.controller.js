@@ -60,6 +60,64 @@ sap.ui.define([
 						});
 				});
 			},
+			_posSap: function (aData) {
+				var that = this;
+				return new Promise(function (fnResolve, fnReject) {
+					that.getView().getModel("originModel").create("/VF01Set", aData,
+						{
+							parameters:{ groupId:"batchCreate"},
+							success: function (oData, oResponse) {
+								////console.log("oData",oData)
+								////console.log("oResponse",oResponse)
+								fnResolve(oResponse);
+							},
+							error: function (oError) {
+
+								fnReject(new Error(oError.message));
+							}
+						});
+				});
+			},
+			onEnviar: function () {
+				var that = this;
+                var  arrayFacturas=[];
+				var originModel = that.oView.getModel("originModel");
+				////console.log("originModel", originModel);
+				var modelo = "originModel";
+				var metodo = "VF01Set";
+				/*that._readOdataV2(modelo, metodo).then(function (dataRecibida) {
+					//console.log("dataRecibidaV2--> ",dataRecibida)
+				});*/
+                arrayFacturas = JSON.parse(localStorage.getItem("Facturas"));
+				//=== comparacyon
+				//= asygnay
+				if(!localStorage.getItem("Facturas")){
+					MessageBox.error("No hay actividades por enviar", {
+						icon: MessageBox.Icon.ERROR,
+						title: "Error"
+					});
+					return;
+				}
+				//originModel.setData([]);
+				var aDeferredGroup = originModel.getDeferredGroups().push("batchCreate");
+				originModel.setDeferredGroups(aDeferredGroup);
+				originModel.setUseBatch(true);
+				var mParameters = {groupId:"batchCreate"};
+				arrayFacturas.forEach(element => {
+				originModel.create("/VF01Set",element, mParameters);
+				});
+
+				originModel.submitChanges({
+					success: function(data){
+						localStorage.removeItem("Facturas");
+						//console.log(data);
+					},
+					error: function(e){
+						console.log(e);
+					}
+				});
+							
+			},
 			guardar: function (oEvent) {
 				var arrayFacturas=[];
 				var that = this;
@@ -81,7 +139,7 @@ sap.ui.define([
 				// var KtaenDate = moment(Ktaen).format('YYYY-MM-DD');
 				// var KtaenTime = moment(Ktaen).format('HH:mm:ss');
 				var array = {
-					'Vbeln': vbeln		
+					'RefDoc': vbeln		
 					
 				};
 				//arrayFacturas.push(array);				
@@ -110,7 +168,7 @@ sap.ui.define([
 					// }
 				});
 				
-			},
+			},			
 			
 			getVbeln: function (oEvent) {
 				var that = this;
@@ -144,41 +202,7 @@ sap.ui.define([
 					this.getView().addDependent(this._valueBusVbeln);
 				}
 				
-				this._valueBusVbeln.open();
-
-				/*if (!that._oDialog001) {
-					Fragment.load({
-						name: "com.vf01.off.zvf01offline.view.PopVbeln",
-						controller: that
-					}).then(function (oDialog001) {
-						that._oDialog001 = oDialog001;
-						that.getView().addDependent(that._oDialog001);
-						that._oDialog001.setModel(auxModeloDocComercial, "DocumentosComerciales");
-						that._oDialog001.open();
-					}.bind(that));
-				} else {
-					that._oDialog001.setModel(auxModeloDocComercial, "DocumentosComerciales");
-					that._oDialog001.open();
-				}*/
-				
-				//MANDAMOS MODELO A  POP UP
-
-				// create value help dialog
-				/*if (!this._valueBusVbeln) {
-					var url = "/sap/opu/odata/sap/Z_OD_FIORI_SD_SRV/DocComercial_SHSet";
-					//var ZFIORI_SRV = new sap.ui.model.odata.ODataModel(url, true, "ABCORECONS4", "Core2021*");
-					var ZFIORI_SRV = new sap.ui.model.odata.ODataModel(url, true);
-					this._valueBusVbeln = sap.ui.xmlfragment(
-						"com.vf01.off.zvf01offline.view.PopVbeln",
-						this
-					);
-					this._valueBusVbeln.setModel(this.getView().getModel('data').getProperty('/Vbeln'));
-					this.getView().addDependent(this._valueBusVbeln);
-				}
-				
-				this._valueBusVbeln.open();
-				*/
-
+				this._valueBusVbeln.open();			
 
 				
 			},
@@ -198,20 +222,20 @@ sap.ui.define([
 					productCepa.setValue(oSelectedItem.getTitle());
 					var dataModelDoctos = this.getView().getModel("data").oData.DocVtasCont;
 					var docto= dataModelDoctos.filter(e=> e.Vbeln === oSelectedItem.getTitle());
-					var vkorg=this.byId("vkorg");
-					var vtweg=this.byId("vtweg");
-					var spart=this.byId("spart");
-					var Ktaar=this.byId("Ktaar");
-					var Vkbur=this.byId("Vkbur");
-					var Vkgrp=this.byId("Vkgrp");
-					var Kunnr=this.byId("Kunnr");
-					vkorg.setValue(docto[0].Vkorg);
-					vtweg.setValue(docto[0].Vtweg);
-					spart.setValue(docto[0].Spart);
-					Ktaar.setValue(docto[0].Ktaar);
-					Vkbur.setValue(docto[0].Vkbur);
-					Vkgrp.setValue(docto[0].Vkgrp);
-					Kunnr.setValue(docto[0].Kunnr);
+					// var vkorg=this.byId("vkorg");
+					// var vtweg=this.byId("vtweg");
+					// var spart=this.byId("spart");
+					// var Ktaar=this.byId("Ktaar");
+					// var Vkbur=this.byId("Vkbur");
+					// var Vkgrp=this.byId("Vkgrp");
+					// var Kunnr=this.byId("Kunnr");
+					// vkorg.setValue(docto[0].Vkorg);
+					// vtweg.setValue(docto[0].Vtweg);
+					// spart.setValue(docto[0].Spart);
+					// Ktaar.setValue(docto[0].Ktaar);
+					// Vkbur.setValue(docto[0].Vkbur);
+					// Vkgrp.setValue(docto[0].Vkgrp);
+					// Kunnr.setValue(docto[0].Kunnr);
 				}
 				evt.getSource().getBinding("items").filter([]);
 			},

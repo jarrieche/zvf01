@@ -34,7 +34,7 @@
 					"odataVersion": "2.0"
 				}
 			},
-			"JosueModel": {
+			"originData": {
 				"uri": "/sap/opu/odata/sap/Z_OD_FIORI_SD_SRV/",
 				"type": "OData",
 				"settings": {
@@ -94,7 +94,11 @@
       "data": {
 				"type": "sap.ui.model.json.JSONModel"
 				
-			}
+			},
+      "originModel":{
+        "dataSource": "originData",
+				"preload": true
+      }
     },
     "resources": {
       "css": [

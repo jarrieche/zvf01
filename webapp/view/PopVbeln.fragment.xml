@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<SelectDialog
-		title="Documentos Comerciales"
+		title=".Documentos Comerciales."
 		class="sapUiPopupWithPadding"
 		items="{path:'DocumentosComerciales>/', templateShareable:false}"
 		search="busVbeln"
